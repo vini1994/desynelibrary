@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
-import { CodeCard } from './components/CodeCard';
+import CodeCard from './components/CodeCard';
 import { snippets as initialSnippets, saveSnippets, loadSnippets } from './data/snippets';
 import { useFavorites } from './hooks/useFavorites';
 import { PublicPreview } from './pages/PublicPreview';
@@ -24,44 +24,56 @@ function App() {
     return activeCategory === 'all' || snippet.category === activeCategory;
   });
 
-  const handleAddSnippet = (newSnippet) => {
+  const handleAddSnippet = useCallback((newSnippet) => {
     setSnippets(prevSnippets => {
       const updatedSnippets = [...prevSnippets, { ...newSnippet, likes: 0 }];
       return updatedSnippets;
     });
-  };
+  }, []);
 
-  const handleDeleteSnippet = (snippetId: string) => {
+  const handleDeleteSnippet = useCallback((snippetId: string) => {
     setSnippets(prevSnippets => {
       const updatedSnippets = prevSnippets.filter(snippet => snippet.id !== snippetId);
       return updatedSnippets;
     });
-  };
+  }, []);
 
-  const Dashboard = () => (
+  const handleCategoryChange = useCallback((category: string) => {
+    setActiveCategory(category);
+    setShowFavorites(false);
+  }, []);
+
+  const handleToggleFavorites = useCallback(() => {
+    setShowFavorites(prev => !prev);
+    setActiveCategory('all');
+  }, []);
+
+  const Dashboard = useCallback(() => (
     <div className="flex min-h-screen bg-gray-900">
       <Sidebar
         activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
+        onCategoryChange={handleCategoryChange}
         showFavorites={showFavorites}
-        onToggleFavorites={() => setShowFavorites(!showFavorites)}
+        onToggleFavorites={handleToggleFavorites}
         onAddSnippet={handleAddSnippet}
       />
-      <main className="flex-1 ml-64 p-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSnippets.map((snippet) => (
-            <CodeCard
-              key={snippet.id}
-              snippet={snippet}
-              isFavorite={isFavorite(snippet.id)}
-              onToggleFavorite={() => toggleFavorite(snippet.id)}
-              onDelete={() => handleDeleteSnippet(snippet.id)}
-            />
-          ))}
+      <main className="flex-1 pl-72">
+        <div className="container mx-auto p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredSnippets.map(snippet => (
+              <CodeCard
+                key={snippet.id}
+                snippet={snippet}
+                isFavorite={isFavorite(snippet.id)}
+                onToggleFavorite={() => toggleFavorite(snippet.id)}
+                onDelete={() => handleDeleteSnippet(snippet.id)}
+              />
+            ))}
+          </div>
         </div>
       </main>
     </div>
-  );
+  ), [activeCategory, showFavorites, handleCategoryChange, handleToggleFavorites, handleAddSnippet, filteredSnippets, handleDeleteSnippet]);
 
   return (
     <Router>

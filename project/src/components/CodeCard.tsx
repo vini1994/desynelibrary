@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Share2, Trash2, Eye } from 'lucide-react';
 import { CodeSnippet } from '../types/snippet';
+import FavoriteButton from './FavoriteButton';
 import { CopyButton } from './CopyButton';
-import { FavoriteButton } from './FavoriteButton';
 import { PreviewModal } from './PreviewModal';
 
 interface CodeCardProps {
@@ -13,13 +13,36 @@ interface CodeCardProps {
   onDelete: () => void;
 }
 
-export const CodeCard: React.FC<CodeCardProps> = ({
-  snippet,
-  isFavorite,
-  onToggleFavorite,
-  onDelete
-}) => {
+const getCategoryStyle = (category: string) => {
+  const styles = {
+    'components': {
+      text: 'text-emerald-300',
+      border: 'border-emerald-500/30',
+      icon: 'text-emerald-400'
+    },
+    'effects': {
+      text: 'text-purple-300',
+      border: 'border-purple-500/30',
+      icon: 'text-purple-400'
+    },
+    'swipe': {
+      text: 'text-amber-300',
+      border: 'border-amber-500/30',
+      icon: 'text-amber-400'
+    },
+    'all': {
+      text: 'text-blue-300',
+      border: 'border-blue-500/30',
+      icon: 'text-blue-400'
+    }
+  };
+
+  return styles[category] || styles.all;
+};
+
+const CodeCard = ({ snippet, isFavorite, onToggleFavorite, onDelete }: CodeCardProps) => {
   const [showPreview, setShowPreview] = useState(false);
+  const categoryStyle = getCategoryStyle(snippet.category);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -43,54 +66,82 @@ export const CodeCard: React.FC<CodeCardProps> = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
-    >
-      <div className="relative group">
-        <img
-          src={snippet.thumbnail}
-          alt={snippet.title}
-          className="w-full h-48 object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="absolute top-2 right-2 flex space-x-2">
-          <button
+    <div className="group bg-gradient-to-br from-gray-800/50 to-gray-900 rounded-xl overflow-hidden border border-gray-800/50 hover:border-blue-500/20">
+      <div className="relative">
+        <div className="absolute top-3 left-3 z-10">
+          <span className={`px-3 py-1.5 text-xs font-medium bg-gray-900/90 rounded-full border shadow-lg backdrop-blur-sm ${categoryStyle.text} ${categoryStyle.border}`}>
+            {snippet.category}
+          </span>
+        </div>
+        
+        <div className="thumb-container relative">
+          <img
+            src={snippet.thumbnail}
+            alt={snippet.title}
+            className="w-full h-52 object-cover object-top"
+          />
+          <div 
+            className="thumb-overlay absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900/80 pointer-events-none"
+            style={{ opacity: 0 }}
+          />
+        </div>
+        
+        <style jsx>{`
+          .thumb-container:hover .thumb-overlay {
+            opacity: 1 !important;
+            transition: opacity 300ms ease;
+          }
+          .thumb-overlay {
+            transition: opacity 300ms ease;
+          }
+        `}</style>
+        
+        <div className="absolute top-3 right-3 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handleDelete}
-            className="p-2 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-600"
+            className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-full text-red-400 hover:text-red-300 transition-colors"
           >
-            <Trash2 className="w-4 h-4 text-white" />
-          </button>
-          <button
+            <Trash2 className="w-4 h-4" />
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             onClick={(e) => {
               e.stopPropagation();
               setShowPreview(true);
             }}
-            className="p-2 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-blue-600"
+            className="p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-full text-blue-400 hover:text-blue-300 transition-colors"
           >
-            <Eye className="w-4 h-4 text-white" />
-          </button>
+            <Eye className="w-4 h-4" />
+          </motion.button>
         </div>
       </div>
       
       <div className="p-6">
-        <h3 className="text-xl font-semibold text-white mb-2">{snippet.title}</h3>
-        <p className="text-gray-400 text-sm mb-4">{snippet.description}</p>
+        <h3 className="text-xl font-semibold text-white mb-2">
+          {snippet.title}
+        </h3>
+        <p className="text-gray-400 text-sm mb-4">
+          {snippet.description}
+        </p>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <FavoriteButton
               isFavorite={isFavorite}
               likes={snippet.likes}
               onToggle={onToggleFavorite}
             />
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={handleShare}
-              className="text-gray-400 hover:text-blue-500 transition-colors p-2 rounded-full hover:bg-gray-700"
+              className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-full hover:bg-blue-500/10"
             >
               <Share2 className="w-5 h-5" />
-            </button>
+            </motion.button>
           </div>
           <CopyButton code={snippet.code} />
         </div>
@@ -101,6 +152,8 @@ export const CodeCard: React.FC<CodeCardProps> = ({
         onClose={() => setShowPreview(false)}
         snippet={snippet}
       />
-    </motion.div>
+    </div>
   );
 };
+
+export default CodeCard;

@@ -42,8 +42,8 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({ isOpen, onClose, sni
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1440px] max-w-[95vw] h-[90vh] bg-gray-900 rounded-md shadow-xl flex flex-col overflow-hidden">
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
+        <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1440px] max-w-[95vw] h-[90vh] bg-gray-900 rounded-md shadow-xl flex flex-col overflow-hidden z-[60]">
           <div className="p-5 border-b border-gray-800">
             <div className="flex items-center justify-between">
               <Dialog.Title className="text-xl font-semibold text-white">

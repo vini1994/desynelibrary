@@ -1,5 +1,4 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { memo } from 'react';
 import { Heart } from 'lucide-react';
 
 interface FavoriteButtonProps {
@@ -8,22 +7,30 @@ interface FavoriteButtonProps {
   onToggle: () => void;
 }
 
-export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
-  isFavorite,
-  likes,
-  onToggle
-}) => {
+const FavoriteButton = ({ isFavorite, likes, onToggle }: FavoriteButtonProps) => {
   return (
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      onClick={onToggle}
-      className={`flex items-center gap-1 transition-colors ${
-        isFavorite ? 'text-pink-500' : 'text-gray-400 hover:text-pink-500'
-      }`}
-    >
-      <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
-      <span>{likes}</span>
-    </motion.button>
+    <div className="isolate relative z-20">
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggle();
+        }}
+        className={`flex items-center gap-1.5 text-sm ${
+          isFavorite
+            ? 'text-pink-500'
+            : 'text-gray-400 hover:text-pink-500'
+        }`}
+      >
+        <Heart
+          className={`w-5 h-5 ${
+            isFavorite ? 'fill-pink-500 scale-110' : 'fill-transparent hover:scale-110'
+          }`}
+        />
+        <span>{likes}</span>
+      </button>
+    </div>
   );
 };
+
+export default memo(FavoriteButton);

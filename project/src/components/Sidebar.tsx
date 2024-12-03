@@ -108,54 +108,80 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className="w-64 bg-gray-900 h-screen fixed left-0 top-0 p-4">
-      <div className="flex items-center gap-2 mb-8">
-        <Code2 className="w-8 h-8 text-blue-500" />
-        <h1 className="text-xl font-bold text-white">CodeGallery</h1>
-      </div>
-      
-      <div className="relative mb-6">
-        <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-        <input
-          type="text"
-          placeholder="Buscar snippets..."
-          className="w-full bg-gray-800 text-white pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+    <div className="w-72 bg-[#0F172A] h-screen fixed left-0 top-0 flex flex-col">
+      {/* Header */}
+      <div className="p-4 border-b border-gray-800/50">
+        <div className="flex items-center gap-3">
+          <Code2 className="w-6 h-6 text-blue-500" />
+          <h1 className="text-lg font-semibold text-white">CodeGallery</h1>
+        </div>
       </div>
 
-      <button
-        onClick={onToggleFavorites}
-        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 ${
-          showFavorites
-            ? 'bg-pink-500 text-white'
-            : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-        }`}
-      >
-        <Bookmark className="w-5 h-5" />
-        <span className="text-sm font-medium">Favoritos</span>
-      </button>
-
-      <button
-        onClick={handleAddComponent}
-        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors mb-4 bg-blue-500 hover:bg-blue-600 text-white"
-      >
-        <Plus className="w-5 h-5" />
-        <span className="text-sm font-medium">Adicionar Componente</span>
-      </button>
-
-      <nav className="space-y-2">
-        {categories.map((category) => (
-          <CategoryButton
-            key={category.id}
-            id={category.id}
-            icon={category.icon}
-            label={category.label}
-            isActive={category.id === activeCategory}
-            onClick={() => onCategoryChange(category.id)}
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto px-3 py-4">
+        {/* Search */}
+        <div className="relative mb-4">
+          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Buscar snippets..."
+            className="w-full bg-gray-800/30 text-gray-200 pl-9 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-700 focus:bg-gray-800/50"
           />
-        ))}
-      </nav>
+        </div>
 
+        {/* Primary Action */}
+        <button
+          onClick={handleAddComponent}
+          className="w-full flex items-center gap-2 px-3 py-2 mb-6 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          <span className="text-sm font-medium">Novo Snippet</span>
+        </button>
+
+        {/* Navigation */}
+        <nav className="space-y-6">
+          {/* Main Navigation */}
+          <div className="space-y-1">
+            <CategoryButton
+              id="all"
+              icon="Home"
+              label="Todos Snippets"
+              isActive={activeCategory === 'all'}
+              onClick={() => onCategoryChange('all')}
+            />
+            <button
+              onClick={onToggleFavorites}
+              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
+                showFavorites
+                  ? 'text-pink-500 bg-pink-500/10'
+                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
+              }`}
+            >
+              <Bookmark className="w-4 h-4" />
+              <span className="font-medium">Favoritos</span>
+            </button>
+          </div>
+
+          {/* Categories */}
+          <div>
+            <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider px-3 mb-2">Categorias</h2>
+            <div className="space-y-1">
+              {categories.filter(cat => cat.id !== 'all').map((category) => (
+                <CategoryButton
+                  key={category.id}
+                  id={category.id}
+                  icon={category.icon}
+                  label={category.label}
+                  isActive={category.id === activeCategory}
+                  onClick={() => onCategoryChange(category.id)}
+                />
+              ))}
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      {/* Modal */}
       {showAddModal && (
         <Dialog.Root open={showAddModal} onOpenChange={() => setShowAddModal(false)}>
           <Dialog.Portal>
