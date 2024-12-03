@@ -110,7 +110,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="w-72 bg-[#0F172A] h-screen fixed left-0 top-0 flex flex-col">
       {/* Header */}
-      <div className="p-4 border-b border-gray-800/50">
+      <div className="px-6 py-4 border-b border-gray-800/50">
         <div className="flex items-center gap-3">
           <Code2 className="w-6 h-6 text-blue-500" />
           <h1 className="text-lg font-semibold text-white">CodeGallery</h1>
@@ -118,30 +118,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto px-3 py-4">
+      <div className="flex-1 overflow-y-auto px-6 py-6">
         {/* Search */}
-        <div className="relative mb-4">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+        <div className="relative mb-6">
+          <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
           <input
             type="text"
             placeholder="Buscar snippets..."
-            className="w-full bg-gray-800/30 text-gray-200 pl-9 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-700 focus:bg-gray-800/50"
+            className="w-full h-10 bg-gray-800/30 text-gray-200 pl-12 pr-4 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-700 focus:bg-gray-800/50"
           />
         </div>
 
         {/* Primary Action */}
         <button
           onClick={handleAddComponent}
-          className="w-full flex items-center gap-2 px-3 py-2 mb-6 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+          className="w-full h-10 flex items-center justify-center gap-2 px-4 mb-8 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-5 h-5" />
           <span className="text-sm font-medium">Novo Snippet</span>
         </button>
 
         {/* Navigation */}
         <nav className="space-y-6">
           {/* Main Navigation */}
-          <div className="space-y-1">
+          <div className="space-y-2">
             <CategoryButton
               id="all"
               icon="Home"

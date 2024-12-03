@@ -66,10 +66,10 @@ const CodeCard = ({ snippet, isFavorite, onToggleFavorite, onDelete }: CodeCardP
   };
 
   return (
-    <div className="group bg-gradient-to-br from-gray-800/50 to-gray-900 rounded-xl overflow-hidden border border-gray-800/50 hover:border-blue-500/20">
+    <div className="group bg-gradient-to-br from-gray-800/50 to-gray-900 rounded-xl overflow-hidden border border-gray-800/50 hover:border-blue-500/20 flex flex-col h-full">
       <div className="relative">
-        <div className="absolute top-3 left-3 z-10">
-          <span className={`px-3 py-1.5 text-xs font-medium bg-gray-900/90 rounded-full border shadow-lg backdrop-blur-sm ${categoryStyle.text} ${categoryStyle.border}`}>
+        <div className="absolute top-6 left-6 z-10">
+          <span className={`px-4 py-1.5 text-xs font-medium bg-gray-900/90 rounded-full border shadow-lg backdrop-blur-sm ${categoryStyle.text} ${categoryStyle.border}`}>
             {snippet.category}
           </span>
         </div>
@@ -96,14 +96,14 @@ const CodeCard = ({ snippet, isFavorite, onToggleFavorite, onDelete }: CodeCardP
           }
         `}</style>
         
-        <div className="absolute top-3 right-3 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        <div className="absolute top-6 right-6 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleDelete}
             className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-full text-red-400 hover:text-red-300 transition-colors"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-5 h-5" />
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -114,21 +114,21 @@ const CodeCard = ({ snippet, isFavorite, onToggleFavorite, onDelete }: CodeCardP
             }}
             className="p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-full text-blue-400 hover:text-blue-300 transition-colors"
           >
-            <Eye className="w-4 h-4" />
+            <Eye className="w-5 h-5" />
           </motion.button>
         </div>
       </div>
       
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         <h3 className="text-xl font-semibold text-white mb-2">
           {snippet.title}
         </h3>
-        <p className="text-gray-400 text-sm mb-4">
+        <p className="text-gray-400/80 text-sm mb-4 flex-grow">
           {snippet.description}
         </p>
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between h-10">
+          <div className="flex items-center space-x-4">
             <FavoriteButton
               isFavorite={isFavorite}
               likes={snippet.likes}
@@ -138,12 +138,14 @@ const CodeCard = ({ snippet, isFavorite, onToggleFavorite, onDelete }: CodeCardP
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleShare}
-              className="text-gray-400 hover:text-blue-400 transition-colors p-2 rounded-full hover:bg-blue-500/10"
+              className="text-gray-400 hover:text-blue-400 transition-colors rounded-full hover:bg-blue-500/10 h-9 px-2"
             >
               <Share2 className="w-5 h-5" />
             </motion.button>
           </div>
-          <CopyButton code={snippet.code} />
+          <div className="h-9">
+            <CopyButton code={snippet.code} />
+          </div>
         </div>
       </div>
 

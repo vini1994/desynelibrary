@@ -31,13 +31,13 @@ export const CategoryButton: React.FC<CategoryButtonProps> = ({
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.99 }}
       onClick={onClick}
-      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
+      className={`w-full flex items-center gap-4 px-4 py-3 rounded-lg transition-colors text-sm ${
         isActive
           ? 'bg-blue-500/10 text-blue-500'
           : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
       }`}
     >
-      <Icon className="w-4 h-4" />
+      <Icon className="w-5 h-5" /> {/* Adjusted icon size to 20px */}
       <span className="font-medium">{label}</span>
     </motion.button>
   );

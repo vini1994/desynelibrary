@@ -58,8 +58,8 @@ function App() {
         onAddSnippet={handleAddSnippet}
       />
       <main className="flex-1 pl-72">
-        <div className="container mx-auto p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="px-6 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
             {filteredSnippets.map(snippet => (
               <CodeCard
                 key={snippet.id}
